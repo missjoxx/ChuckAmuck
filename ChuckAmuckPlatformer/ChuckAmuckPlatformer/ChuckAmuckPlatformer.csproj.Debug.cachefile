@@ -49,7 +49,6 @@ Content\Pickups\controller.xnb
 Content\Pickups\pizza.xnb
 Content\Pickups\skateboard.xnb
 Content\Pickups\soccer.xnb
-Content\Fonts\Hud.xnb
 Content\PlayerSprites\idle.xnb
 Content\PlayerSprites\running.xnb
 Content\GameScreens\background.xnb
@@ -63,4 +62,6 @@ Content\Backgrounds\Layer2_2.xnb
 Content\Backgrounds\Layer1_0.xnb
 Content\Backgrounds\Layer1_1.xnb
 Content\Backgrounds\Layer1_2.xnb
+Content\Fonts\Hud.xnb
+Content\GameScreens\lifeheart.xnb
 Content\Levels\0.txt

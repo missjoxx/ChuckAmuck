@@ -14,6 +14,7 @@ namespace ChuckAmuckPlatformer
         //Structure of the level
         private Tile[,] tiles;
         private Layer[] layers;
+        
         private const int EntityLayer = 2;
 
         Player player;
@@ -54,6 +55,12 @@ namespace ChuckAmuckPlatformer
             get { return timeRemaining; }
         }
         TimeSpan timeRemaining;
+
+        public TimeSpan InvulnerableTimer
+        {
+            get { return invulnerableTimer; }
+        }
+        TimeSpan invulnerableTimer;
 
         private const int PointsPerSecond = 5;
 
@@ -146,13 +153,13 @@ namespace ChuckAmuckPlatformer
 
                 //Enemies
                 case 'A':
-                    return LoadNibblesTile(x, y, "Nibbles");
+                    return LoadNibblesTile(x, y, "Nibbles", 1);
                 case 'B':
-                    return LoadWigglesTile(x, y, "Wiggles");
+                    return LoadWigglesTile(x, y, "Wiggles", 2);
                 case 'C':
-                    return LoadPiddlesTile(x, y, "Piddles");
+                    return LoadPiddlesTile(x, y, "Piddles", 3);
                 case 'D':
-                    return LoadMoTile(x, y, "Mo");
+                    return LoadMoTile(x, y, "Mo", 2);
 
                 //Platform
                 case '~':
@@ -216,34 +223,34 @@ namespace ChuckAmuckPlatformer
         //    return new Tile(null, TileCollision.Passable);
         //}
 
-        private Tile LoadMoTile(int x, int y, string spriteSet)
+        private Tile LoadMoTile(int x, int y, string spriteSet, int contactDamage)
         {
             Vector2 position = RectangleExtensions.GetBottomCenter(GetBounds(x, y));
-            enemy.Add(new EnemyMo(this, position, spriteSet));
+            enemy.Add(new EnemyMo(this, position, spriteSet, contactDamage));
 
             return new Tile(null, TileCollision.Passable);
         }
 
-        private Tile LoadWigglesTile(int x, int y, string spriteSet)
+        private Tile LoadWigglesTile(int x, int y, string spriteSet, int contactDamage)
         {
             Vector2 position = RectangleExtensions.GetBottomCenter(GetBounds(x, y));
-            enemy.Add(new EnemyWiggles(this, position, spriteSet));
+            enemy.Add(new EnemyWiggles(this, position, spriteSet, contactDamage));
 
             return new Tile(null, TileCollision.Passable);
         }
 
-        private Tile LoadNibblesTile(int x, int y, string spriteSet)
+        private Tile LoadNibblesTile(int x, int y, string spriteSet, int contactDamage)
         {
             Vector2 position = RectangleExtensions.GetBottomCenter(GetBounds(x, y));
-            enemy.Add(new EnemyNibbles(this, position, spriteSet));
+            enemy.Add(new EnemyNibbles(this, position, spriteSet, contactDamage));
 
             return new Tile(null, TileCollision.Passable);
         }
 
-        private Tile LoadPiddlesTile(int x, int y, string spriteSet)
+        private Tile LoadPiddlesTile(int x, int y, string spriteSet, int contactDamage)
         {
             Vector2 position = RectangleExtensions.GetBottomCenter(GetBounds(x, y));
-            enemy.Add(new EnemyPiddles(this, position, spriteSet));
+            enemy.Add(new EnemyPiddles(this, position, spriteSet, contactDamage));
 
             return new Tile(null, TileCollision.Passable);
         }
@@ -349,9 +356,26 @@ namespace ChuckAmuckPlatformer
             {
                 enemies.Update(gameTime);
 
-                if (enemies.BoundingRectangle.Intersects(Player.BoundingRectangle))
+                if (enemies.BoundingRectangle.Intersects(Player.BoundingRectangle) && !player.IsInvulnerable)
                 {
-                    OnPlayerKilled(enemies);
+                    Player.CurrentHealth -= enemies.ContactDamage;
+
+                    if (Player.CurrentHealth <= 0)
+                    {
+                        OnPlayerKilled(enemies);
+                    }
+                    else
+                    {
+                        player.InvulnerableTime = 2.0f;
+                        if (Player.Velocity.Length() > 0)
+                        {
+                            Player.Velocity = -10 * Player.Velocity;
+                        }
+                        else
+                        {
+                            Player.Velocity = 50 * (Player.Position - enemies.Position);
+                        }
+                    }
                 }
             }
         }

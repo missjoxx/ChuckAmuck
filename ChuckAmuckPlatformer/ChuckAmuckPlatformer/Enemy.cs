@@ -46,6 +46,7 @@ namespace ChuckAmuckPlatformer
         protected bool isAlive;
         protected bool isJumping;
         protected bool wasJumping;
+        protected int contactDamage;
 
         public Level Level
         {
@@ -70,6 +71,12 @@ namespace ChuckAmuckPlatformer
         public bool WasJumping
         {
             get { return wasJumping; }
+        }
+
+        public int ContactDamage
+        {
+            get { return contactDamage; }
+            set { contactDamage = value; }
         }
 
         public Vector2 Position
@@ -194,7 +201,7 @@ namespace ChuckAmuckPlatformer
                     //if (jumpTime == 0.0f)
                     //    jumpSound.Play();
 
-                    jumpTime += (float)gameTime.ElapsedGameTime.TotalSeconds;
+                    jumpTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
                     sprite.PlayAnimation(jumpAnimation);
                 }
 
@@ -295,7 +302,7 @@ namespace ChuckAmuckPlatformer
 
             // Base velocity is a combination of horizontal movement control and
             // acceleration downward due to gravity.
-            velocity.X += movement * MoveAcceleration * elapsed;
+            velocity.X += movement /* MoveAcceleration*/ * elapsed;
             velocity.Y = MathHelper.Clamp(velocity.Y + GravityAcceleration * elapsed, -MaxFallSpeed, MaxFallSpeed);
 
             if (IsJumping)

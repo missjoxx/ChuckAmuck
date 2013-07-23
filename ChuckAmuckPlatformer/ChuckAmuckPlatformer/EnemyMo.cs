@@ -6,11 +6,11 @@ namespace ChuckAmuckPlatformer
 {
     class EnemyMo : Enemy
     {
-        public EnemyMo(Level levelMo, Vector2 positionMo, string spriteSetMo)
+        public EnemyMo(Level levelMo, Vector2 positionMo, string spriteSetMo, int contactDamageMo)
         {
             this.level = levelMo;
             this.position = positionMo;
-            
+            this.ContactDamage = contactDamageMo;
             LoadContent(spriteSetMo);
         }
 

@@ -9,11 +9,11 @@ namespace ChuckAmuckPlatformer
         protected const float MoveSpeed = 32.0f;
         //Physics piddlesPhysics = new Physics();
 
-        public EnemyPiddles(Level levelPiddles, Vector2 positionPiddles, string spriteSetPiddles)
+        public EnemyPiddles(Level levelPiddles, Vector2 positionPiddles, string spriteSetPiddles, int contactDamagePiddles)
         {
             this.level = levelPiddles;
             this.position = positionPiddles;
-
+            this.ContactDamage = contactDamagePiddles;
             LoadContent(spriteSetPiddles);
         }
 

@@ -8,11 +8,11 @@ namespace ChuckAmuckPlatformer
     {
         protected const float MoveSpeed = 32.0f;
         
-        public EnemyWiggles(Level levelWiggles, Vector2 positionWiggles, string spriteSetWiggles)
+        public EnemyWiggles(Level levelWiggles, Vector2 positionWiggles, string spriteSetWiggles, int contactDamageWiggles)
         {
             this.level = levelWiggles;
             this.position = positionWiggles;
-
+            this.ContactDamage = contactDamageWiggles;
             LoadContent(spriteSetWiggles);
         }
 

@@ -8,11 +8,11 @@ namespace ChuckAmuckPlatformer
     {
         protected const float MoveSpeed = 48.0f;
 
-        public EnemyNibbles(Level levelNibbles, Vector2 positionNibbles, string spriteSetNibbles)
+        public EnemyNibbles(Level levelNibbles, Vector2 positionNibbles, string spriteSetNibbles, int contactDamageNibbles)
         {
             this.level = levelNibbles;
             this.position = positionNibbles;
-
+            this.ContactDamage = contactDamageNibbles;
             LoadContent(spriteSetNibbles);
         }
 

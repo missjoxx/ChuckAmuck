@@ -18,15 +18,18 @@ namespace ChuckAmuckPlatformer
 
         //Player Attributes
         Level level;
+        int currentHealth;
+        int maxHealth;
+        float invulnerableTime;
         bool isAlive;
-        Vector2 position;
-        private float previousBottom;
-        Vector2 velocity;
         bool isOnGround;
+        Vector2 position;
+        Vector2 velocity;
+        private float previousBottom;
         private float movement;
+        private float jumpTime;
         private bool isJumping;
         private bool wasJumping;
-        private float jumpTime;
         private Rectangle localBounds;
 
         //Physics playerPhysics = new Physics(); 
@@ -74,6 +77,29 @@ namespace ChuckAmuckPlatformer
             set { movement = value; }
         }
 
+        public int CurrentHealth
+        {
+            get { return currentHealth; }
+            set { currentHealth = value; }
+        }
+
+        public int MaxHealth
+        {
+            get { return maxHealth; }
+            set { maxHealth = value; }
+        }
+
+        public float InvulnerableTime
+        {
+            get { return invulnerableTime; }
+            set { invulnerableTime = value; }
+        }
+
+        public Boolean IsInvulnerable
+        {
+            get { return invulnerableTime > 0; }
+        }
+
         // Constants for controling horizontal movement
         private const float MoveAcceleration = 13000.0f;
         private const float MaxMoveSpeed = 1750.0f;
@@ -103,6 +129,8 @@ namespace ChuckAmuckPlatformer
             this.level = level;
 
             LoadContent();
+
+            maxHealth = 3;
 
             Reset(position);
         }
@@ -134,6 +162,7 @@ namespace ChuckAmuckPlatformer
             Position = position;
             //Velocity = Vector2.Zero;
             isAlive = true;
+            currentHealth = maxHealth;
             sprite.PlayAnimation(idleAnimation);
         }
 
@@ -142,6 +171,11 @@ namespace ChuckAmuckPlatformer
             GetInput(keyboardState);
 
             ApplyPhysics(gameTime);
+
+            if (IsInvulnerable)
+            {
+                invulnerableTime = Math.Max(0.0f, invulnerableTime - (float)gameTime.ElapsedGameTime.TotalSeconds);
+            }
 
             if (IsAlive && IsOnGround)
             {

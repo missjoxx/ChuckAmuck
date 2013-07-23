@@ -18,6 +18,7 @@ namespace ChuckAmuckPlatformer
         private Texture2D menuScreen;
         private Texture2D winScreen;
         private Texture2D deadScreen;
+        private Texture2D heartIcon;
         //private Texture2D helpScreen;
 
         private int levelIndex = -1;
@@ -52,6 +53,7 @@ namespace ChuckAmuckPlatformer
             winScreen = Content.Load<Texture2D>("GameScreens/win");
             deadScreen = Content.Load<Texture2D>("GameScreens/gameover");
             menuScreen = Content.Load<Texture2D>("GameScreens/intro");
+            heartIcon = Content.Load<Texture2D>("GameScreens/lifeHeart");
             //helpScreen = Content.Load<Texture2D>("GameScreens/help");
 
             LoadNextLevel();
@@ -152,6 +154,14 @@ namespace ChuckAmuckPlatformer
             float timeHeight = hudFont.MeasureString(timeString).Y;
             DrawShadowedString(hudFont, "Score: " + level.Score.ToString(), hudLocation + new Vector2(0.0f, timeHeight * 1.2f), Color.Yellow);
 
+            //Draw players life 
+            Vector2 drawPosition = new Vector2(0.0f, timeHeight * 1.3f + heartIcon.Height);
+
+            for (int i = 1; i <= level.Player.CurrentHealth; ++i)
+            {
+                spriteBatch.Draw(heartIcon, hudLocation + drawPosition, Color.White);
+                drawPosition.X += 40;
+            }
             //Determine Game Screen to draw
             Texture2D gameScreenStatus = null;
 
